@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .navbar {
+            background-color: #010203;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: #3cfe02;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-name {
+            font-size: 16px;
+            color: #333;
+            flex-grow: 1;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+        .access-button, .delete-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .access-button:hover {
+            background-color: #0056b3;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .upload-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .upload-button:hover {
+            background-color: #218838;
+        }
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'home-page' %}">Home</a>
+    </div>
+    <div class="container">
+        <h1>Vault Storage Files</h1>
+        <a href="{% url 'upload_hidden_file' %}" class="upload-button">Upload Hidden File</a>
+        <ul>
+            {% for hidden_file in hidden_files %}
+                <li>
+                    <span class="file-name">{{ hidden_file.file.name }}</span>
+                    <div class="button-container">
+                        <a href="{% url 'access_hidden_file' hidden_file.id %}" class="access-button">Access</a>
+                        <form method="post" action="{% url 'delete_hidden_file' hidden_file.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
